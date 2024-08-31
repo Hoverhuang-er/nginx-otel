@@ -5,7 +5,7 @@ WORKDIR /opt
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git libssl-dev
+    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git libssl-dev zlib1g-dev
 RUN apt-get install -y perl-modules cpanminus
 RUN cpan Crypt::Misc
 RUN cpan Net::SSLeay
