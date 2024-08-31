@@ -7,8 +7,9 @@ WORKDIR /opt
 RUN apt-get update && \
     apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git 
 RUN apt-get install -y perl-modules cpanminus
-RUN cpan IO::Socket::SSL 
 RUN cpan Crypt::Misc
+RUN cpan IO::Socket::SSL 
+
 
 # Clone nginx repository
 RUN hg clone http://hg.nginx.org/nginx/ /opt/nginx
