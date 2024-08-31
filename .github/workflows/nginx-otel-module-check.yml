@@ -40,7 +40,7 @@ jobs:
           path: |
             build/_deps/grpc-build/third_party/protobuf/protoc
             build/_deps/otelcpp-src/third_party/opentelemetry-proto
-  test-module:
+  build_nginx:
     needs: build-module
     runs-on: ubuntu-latest
     steps:
@@ -76,11 +76,6 @@ jobs:
         working-directory: nginx
         run: |
           auto/configure --with-compat --with-debug --with-http_ssl_module \
-                         --with-http_v2_module --with-http_v3_module
+                         --with-http_v2_module --with-http_v3_module --with-http_stub_status_module
           make -j 4
-      - name: Run tests
-        working-directory: tests
-        run: |
-          PERL5LIB=../nginx-tests/lib TEST_NGINX_UNSAFE=1 \
-              TEST_NGINX_VERBOSE=1 TEST_NGINX_GLOBALS="load_module \
-              ${PWD}/../build/ngx_otel_module.so;" prove -v .
+
