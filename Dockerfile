@@ -5,8 +5,8 @@ WORKDIR /opt
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git && \
-    cpan IO::Socket::SSL Crypt::Misc
+    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git
+RUN cpan IO::Socket::SSL Crypt::Misc
 
 # Clone nginx repository
 RUN hg clone http://hg.nginx.org/nginx/ /opt/nginx
