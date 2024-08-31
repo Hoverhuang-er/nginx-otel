@@ -20,8 +20,8 @@ jobs:
       - name: Build images
         run: |
           docker build -t ssr:latest .
-          docker tag ssr:latest cdfng/nginx:otel
-          docker push 
+          docker tag ssr:latest docker.io/cdfng/nginx:otel
+          docker push docker.io/cdfng/nginx:otel
   build-module:
     runs-on: ubuntu-latest
     steps:
