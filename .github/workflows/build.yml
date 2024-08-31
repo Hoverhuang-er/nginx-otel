@@ -4,6 +4,10 @@ on:
   push:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build_images:
     runs-on: ubuntu-latest
@@ -19,7 +23,8 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       - name: Build images
         run: |
-          docker build -t ssr:latest .
+          ls -alth
+          docker build -t ssr:latest . -f Dockerfile
           docker tag ssr:latest docker.io/cdfng/nginx:otel
           docker push docker.io/cdfng/nginx:otel
   # build-module:
