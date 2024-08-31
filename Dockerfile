@@ -5,7 +5,8 @@ WORKDIR /opt
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git
+    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git 
+RUN apt-get install -y perl-modules cpanminus
 RUN cpan IO::Socket::SSL Crypt::Misc
 
 # Clone nginx repository
