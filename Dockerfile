@@ -40,7 +40,7 @@ WORKDIR /opt
 
 # Copy artifacts from build-otel-module stage
 COPY --from=build-otel-module /opt/artifacts /opt/artifacts
-COPY --from=build-otel-module /opt/nginx /opt/nginx
+# COPY --from=build-otel-module /opt/nginx /opt/nginx
 
 # Install dependencies
 RUN apt-get update && \
@@ -59,7 +59,8 @@ RUN git clone https://github.com/nacos-group/nginx-nacos-upstream /opt/nginx-nac
 
 # Copy nginx-nacos-upstream to the same level as auto/configure
 RUN cp -r /opt/nginx-nacos-upstream /opt/nginx/modules/nacos
-
+# Clone nginx repository
+RUN hg clone http://hg.nginx.org/nginx/ /opt/nginx
 # Build nginx with additional modules
 WORKDIR /opt/nginx
 RUN auto/configure --with-compat --with-debug --with-http_ssl_module --with-http_v2_module --with-http_v3_module --with-http_stub_status_module \
