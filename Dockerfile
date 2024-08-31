@@ -5,7 +5,7 @@ WORKDIR /opt
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git libssl-dev zlib1g-dev
+    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git libssl-dev zlib1g-dev libpcre3 libpcre3-dev
 RUN apt-get install -y perl-modules cpanminus
 RUN cpan Crypt::Misc
 RUN cpan Net::SSLeay
@@ -44,8 +44,12 @@ COPY --from=build-otel-module /opt/nginx /opt/nginx
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git && \
-    cpan IO::Socket::SSL Crypt::Misc
+    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git libssl-dev zlib1g-dev libpcre3 libpcre3-dev && \
+RUN apt-get install -y perl-modules cpanminus
+RUN cpan Crypt::Misc
+RUN cpan Net::SSLeay
+RUN cpan IO::Socket::SSL 
+
 
 # Clone nginx-tests repository
 RUN hg clone http://hg.nginx.org/nginx-tests/ /opt/nginx-tests
