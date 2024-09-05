@@ -15,7 +15,7 @@ WORKDIR /nginx
 
 # Clone nginx-nacos-upstream repository
 RUN git clone https://github.com/nacos-group/nginx-nacos-upstream /nginx-nacos-upstream
-
+RUN patch -p1 < nginx-nacos-upstream/patch/nginx.patch
 # Ensure the /nginx/modules directory exists
 RUN mkdir -p /nginx/modules
 
