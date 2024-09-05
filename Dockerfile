@@ -31,7 +31,7 @@ RUN cmake -DNGX_OTEL_NGINX_BUILD_DIR=/nginx/objs -DNGX_OTEL_DEV=ON .. && \
 
 # Archive module
 RUN mkdir -p /artifacts && \
-    cp /nginx/build/ngx_otel_module.so /artifacts/
+    cp /nginx-otel/build/ngx_otel_module.so /artifacts/
 
 # Stage 2: Build Nginx
 FROM debian:latest AS build-nginx
