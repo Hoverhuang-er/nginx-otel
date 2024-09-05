@@ -20,7 +20,8 @@ RUN git clone https://github.com/nacos-group/nginx-nacos-upstream /nginx-nacos-u
 RUN mkdir -p /nginx/modules
 
 # Copy nginx-nacos-upstream to the same level as auto/configure
-RUN cp -r /nginx-nacos-upstream /nginx/modules/nacos
+RUN cp -r /nginx-nacos-upstream/modules/nacos /nginx/modules/nacos
+RUN cp -r /nginx-nacos-upstream/modules/auxiliary /nginx/modules/auxiliary
 
 # Build nginx with additional modules
 RUN ./auto/configure --with-compat --with-debug --with-http_ssl_module --with-http_v2_module --with-http_v3_module --with-http_stub_status_module \
