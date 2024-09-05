@@ -1,0 +1,34 @@
+# Stage 1: Build Nginx
+FROM debian:latest AS build-nginx
+
+# Copy artifacts from build-otel-module stage
+COPY --from=build-otel-module /artifacts /artifacts
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y cmake libc-ares-dev g++ libre2-dev mercurial curl perl git libssl-dev zlib1g-dev libpcre3 libpcre3-dev && \
+RUN apt-get install -y perl-modules cpanminus
+RUN cpan Crypt::Misc
+RUN cpan Net::SSLeay
+RUN cpan IO::Socket::SSL
+
+# Clone nginx-tests repository
+RUN hg clone http://hg.nginx.org/nginx-tests/ /nginx-tests
+
+# Clone nginx-nacos-upstream repository
+RUN git clone https://github.com/nacos-group/nginx-nacos-upstream /nginx-nacos-upstream
+
+# Copy nginx-nacos-upstream to the same level as auto/configure
+RUN cp -r /nginx-nacos-upstream /nginx/modules/nacos
+# Clone nginx repository
+RUN hg clone http://hg.nginx.org/nginx/ /nginx
+# Build nginx with additional modules
+WORKDIR /nginx
+RUN ./auto/configure --with-compat --with-debug --with-http_ssl_module --with-http_v2_module --with-http_v3_module --with-http_stub_status_module \
+                   --add-module=../modules/auxiliary --add-module=../modules/nacos --prefix=.. \
+                   --conf-path=conf/my.conf --error-log-path=objs/logs/error.log --pid-path=objs/logs/nginx.pid \
+                   --lock-path=objs/logs/nginx.lock --http-log-path=objs/logs/access.log && \
+    make -j 4
+
+# Copy all object files
+RUN find /nginx/objs -name '*.o' -exec cp {} /artifacts/ \;
