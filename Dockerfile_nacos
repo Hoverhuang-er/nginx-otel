@@ -2,7 +2,7 @@
 FROM debian:latest AS build-nginx
 
 # Copy artifacts from build-otel-module stage
-COPY --from=build-otel-module /artifacts /artifacts
+#COPY --from=build-otel-module /artifacts /artifacts
 
 # Install dependencies
 RUN apt-get update && \
@@ -11,9 +11,6 @@ RUN apt-get install -y perl-modules cpanminus
 RUN cpan Crypt::Misc
 RUN cpan Net::SSLeay
 RUN cpan IO::Socket::SSL
-
-# Clone nginx-tests repository
-RUN hg clone http://hg.nginx.org/nginx-tests/ /nginx-tests
 
 # Clone nginx-nacos-upstream repository
 RUN git clone https://github.com/nacos-group/nginx-nacos-upstream /nginx-nacos-upstream
