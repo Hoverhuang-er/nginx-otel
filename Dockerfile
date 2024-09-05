@@ -1,8 +1,6 @@
 # Stage 1: Build OpenTelemetry Module
 FROM debian:latest AS build-otel-module
 
-WORKDIR /opt
-
 # Install dependencies
 RUN apt-get update && \
     apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git libssl-dev zlib1g-dev libpcre3 libpcre3-dev
@@ -16,15 +14,14 @@ RUN cpan IO::Socket::SSL
 RUN hg clone http://hg.nginx.org/nginx/ /opt/nginx
 
 # Configure nginx
-WORKDIR /opt/nginx
+WORKDIR /nginx
 RUN auto/configure --with-compat
 
 # Create build directory
-WORKDIR /opt
 RUN mkdir build
 
 # Build module
-WORKDIR /opt/build
+WORKDIR build
 RUN cmake -DNGX_OTEL_NGINX_BUILD_DIR=/opt/nginx/objs -DNGX_OTEL_DEV=ON .. && \
     make -j 4 && \
     strip ngx_otel_module.so
@@ -35,8 +32,6 @@ RUN mkdir -p /opt/artifacts && \
 
 # Stage 2: Build Nginx
 FROM debian:latest AS build-nginx
-
-WORKDIR /opt
 
 # Copy artifacts from build-otel-module stage
 COPY --from=build-otel-module /opt/artifacts /opt/artifacts
@@ -70,7 +65,7 @@ RUN auto/configure --with-compat --with-debug --with-http_ssl_module --with-http
     make -j 4
 
 # Copy all object files
-RUN find /opt/nginx/objs -name '*.o' -exec cp {} /opt/artifacts/ \;
+RUN find /nginx/objs -name '*.o' -exec cp {} /opt/artifacts/ \;
 
 # Stage 3: Runtime
 FROM debian:latest AS runtime
