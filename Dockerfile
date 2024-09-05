@@ -3,7 +3,7 @@ FROM debian:latest AS build-otel-module
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git libssl-dev zlib1g-dev libpcre3 libpcre3-dev
+    apt-get install -y cmake libc-ares-dev g++ libre2-dev mercurial curl perl git libssl-dev zlib1g-dev libpcre3 libpcre3-dev
 RUN apt-get install -y perl-modules cpanminus
 RUN cpan Crypt::Misc
 RUN cpan Net::SSLeay
@@ -41,7 +41,7 @@ COPY --from=build-otel-module /artifacts /artifacts
 
 # Install dependencies
 RUN apt-get update && \
-    apt-get install -y cmake libc-ares-dev libre2-dev mercurial curl perl git libssl-dev zlib1g-dev libpcre3 libpcre3-dev && \
+    apt-get install -y cmake libc-ares-dev g++ libre2-dev mercurial curl perl git libssl-dev zlib1g-dev libpcre3 libpcre3-dev && \
 RUN apt-get install -y perl-modules cpanminus
 RUN cpan Crypt::Misc
 RUN cpan Net::SSLeay
