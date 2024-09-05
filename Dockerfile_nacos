@@ -25,7 +25,7 @@ RUN cp -r /nginx-nacos-upstream/modules/auxiliary /nginx/modules/auxiliary
 
 # Build nginx with additional modules
 RUN ./auto/configure --with-compat --with-debug --with-http_ssl_module --with-http_v2_module --with-http_v3_module --with-http_stub_status_module \
-                   --add-module=../modules/auxiliary --add-module=../modules/nacos --prefix=.. \
+                   --add-module=/nginx/modules/auxiliary --add-module=/nginx/modules/nacos --prefix=.. \
                    --conf-path=conf/my.conf --error-log-path=objs/logs/error.log --pid-path=objs/logs/nginx.pid \
                    --lock-path=objs/logs/nginx.lock --http-log-path=objs/logs/access.log && \
     make -j 4
