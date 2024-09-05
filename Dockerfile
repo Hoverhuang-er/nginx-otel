@@ -19,11 +19,9 @@ RUN ./auto/configure --with-compat
 ## Create build directory
 #RUN mkdir build
 # Create build directory
-RUN mkdir -p /nginx-otel/build
+RUN mkdir -p /nginx/build
 
-# Build module
-WORKDIR /nginx-otel/build
-RUN cmake -DNGX_OTEL_NGINX_BUILD_DIR=/nginx/objs -DNGX_OTEL_DEV=ON .. && \
+RUN cmake -DNGX_OTEL_NGINX_BUILD_DIR=/nginx/build -DNGX_OTEL_DEV=ON .. && \
     make -j 4 && \
     strip ngx_otel_module.so
 
