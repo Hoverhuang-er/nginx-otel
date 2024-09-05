@@ -19,7 +19,7 @@ RUN ./auto/configure --with-compat
 ## Create build directory
 #RUN mkdir build
 # Create build directory
-RUN mkdir /nginx-otel/build
+RUN mkdir -p /nginx-otel/build
 
 # Build module
 WORKDIR /nginx-otel/build
